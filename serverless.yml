@@ -1,0 +1,38 @@
+# Serverless application stack file
+
+service: turnertest
+
+provider:
+  name: aws
+  runtime: java8
+  region: eu-west-1
+  stage: ${opt:stage, self:custom.defaultStage}
+  profile: ${self:custom.profiles.${self:provider.stage}}
+  deploymentBucket: artefacts.turnertest-u8555hxwsz1d
+
+custom:
+  defaultStage: dev
+  profiles:
+    dev: turnertest
+    prod: prodprofile
+
+package:
+  artifact: target/content-1.0.0.jar
+
+functions:
+  content:
+    handler: com.turner.content.ContentHandler
+    role: arn:aws:iam::${opt:accountId}:role/FTApplicationRoleFor_turnertest
+    events:
+      - http:
+          path: content/{id}
+          method: get
+          cors: true
+  list:
+      handler: com.turner.list.ListHandler
+      role: arn:aws:iam::${opt:accountId}:role/FTApplicationRoleFor_turnertest
+      events:
+        - http:
+            path: list
+            method: get
+            cors: true
