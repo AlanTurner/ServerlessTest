@@ -6,9 +6,9 @@ Deploys two simple lambdas along with an API Gateway.  AWS Permissions need to b
 
  - Install [serverless framework](https://serverless.com).
 
- - Create your AWS Permissions
+ - Create your AWS Permissions/Buckets and update serverless.yml
  
- - Create AWS profile (or however you wish to manage credentials - see above link docs)
+ - Create local AWS profile (or however you wish to manage credentials - see above link docs)
  
  - Checkout this repo
  
