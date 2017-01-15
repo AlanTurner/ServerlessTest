@@ -2,10 +2,10 @@ package com.turner.content;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.turner.shared.ErrorResponse;
 import com.turner.shared.Request;
 import com.turner.shared.Response;
 import com.turner.shared.model.Article;
-import com.turner.shared.ErrorResponse;
 import com.turner.shared.service.DatabaseService;
 import org.apache.log4j.Logger;
 
@@ -38,11 +38,12 @@ public class ContentHandler implements RequestHandler<Map<String, Object>, Respo
             LOG.info(String.format("Obtained article [%s] ", articleById));
 
             return Response.builder()
+                    .enableCors()
                     .setStatusCode(Response.SC_OK)
                     .setObjectBody(articleById)
                     .build();
 
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             LOG.error(String.format("Invalid article requested [%s]", context.getAwsRequestId()));
             return error(Response.SC_NOT_FOUND, "The article you requested was not found.");
 
@@ -57,6 +58,7 @@ public class ContentHandler implements RequestHandler<Map<String, Object>, Respo
 
     private Response error(final int status, final String message) {
         return Response.builder()
+                .enableCors()
                 .setStatusCode(status)
                 .setObjectBody(new ErrorResponse(message))
                 .build();

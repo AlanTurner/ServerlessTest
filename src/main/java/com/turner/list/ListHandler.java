@@ -11,8 +11,6 @@ import org.apache.log4j.Logger;
 import javax.annotation.Resource;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
-
 public class ListHandler implements RequestHandler<Map<String, Object>, Response> {
 
     private static final Logger LOG = Logger.getLogger(ListHandler.class);
@@ -32,6 +30,7 @@ public class ListHandler implements RequestHandler<Map<String, Object>, Response
             LOG.info(String.format("Obtained headlines [%s] ", headlines));
 
             return Response.builder()
+                    .enableCors()
                     .setStatusCode(Response.SC_OK)
                     .setObjectBody(headlines)
                     .build();
@@ -46,6 +45,7 @@ public class ListHandler implements RequestHandler<Map<String, Object>, Response
 
     private Response serverError() {
         return Response.builder()
+                .enableCors()
                 .setStatusCode(Response.SC_SERVER_ERROR)
                 .setObjectBody(new ErrorResponse("The request could not be processed."))
                 .build();
